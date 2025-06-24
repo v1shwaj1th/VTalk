@@ -38,8 +38,6 @@ export const signup = async (req, res) => {
     console.log(error.message);
     res.json({
       success: false,
-      userData: newUser,
-      token,
       message: error.message,
     });
   }
@@ -54,9 +52,7 @@ export const login = async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(password, userData.password);
     if (!isPasswordCorrect) {
       res.json({
-        success: true,
-        userData: newUser,
-        token,
+        success: false,
         message: "Invalid credentials",
       });
     }
@@ -72,8 +68,6 @@ export const login = async (req, res) => {
     console.log(error.message);
     res.json({
       success: false,
-      userData: newUser,
-      token,
       message: error.message,
     });
   }
@@ -106,8 +100,8 @@ export const updateProfile = async (req, res) => {
         { profilePic: upload.secure_url, bio, fullName },
         { new: true }
       );
-      res.json({ success: true, user: updatedUser });
     }
+    res.json({ success: true, user: updatedUser });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
